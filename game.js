@@ -10,104 +10,135 @@ class Game {
         this.player = 100;
     }
 
-    //Метод определяющий случайный шаг
+    //Random step method.
     stepSelection = () => {
         return  Math.floor(Math.random() * (this.max - this.min + 1)) + this.min;
     };
 
-    //Метод определяющий случайный уровень нанесения урона в шаге 1
+    // Method that determines the random level of damage in step 1.
     stepOne = () => {
         return Math.floor(Math.random() * (this.stepOneMax - this.stepOneMin + 1)) + this.stepOneMin;
     };
 
-    //Метод определяющий случайный уровень нанесения урона в шаге 2
+    // Method that determines the random level of damage in step 2.
     stepTwo = () => {
         return Math.floor(Math.random() * (this.stepTwoMax - this.stepTwoMin + 1)) + this.stepTwoMin;
     };
 
-    //Метод определяющий случайный уровень исцеления в шаге 3
+    //Method for determining a random healing level in step 3.
     stepTree = () => {
         return Math.floor(Math.random() * (this.stepOneMax - this.stepOneMin + 1)) + this.stepOneMin;
     };
 
-    //Запуск программы
+    // Program launch.
     start = () => {
 
-        //Присвоение переменным Игрока и Компьютера уровня здоровья
+        //Assigning Player and Computer Health Levels to Variables.
         let healthComputer = this.computer;
         let healthPlayer = this.player;
 
-        //Цикл который остановится при достижении здоровья Игрока или Компьютера нулю или меньше
-        while (healthComputer > 0 && healthPlayer > 0) {
-            //Компьютер делает шаг и присваивается в переменную
-            let stepComputer = this.stepSelection();
-            console.log('Шаг компьютра:' + stepComputer);
-            //Условие, если шаг 1, то будет нанесен уровень случайного урона, соответствующего диапазону из шага 1
-            if (stepComputer === 1) {
-                let hitOnComputer = this.stepOne();
-                console.log('Будет нанесен урон:' + hitOnComputer);
-                healthComputer = healthComputer - hitOnComputer;
-                console.log('Здоровье компьютера:' + healthComputer);
-            }
+        //A cycle that will stop when the health of the Player or Computer is zero or less.
+        while (healthComputer >= 0 && healthPlayer >= 0) {
+
+            //The Computer takes a step and is assigned to a variable.
+            const stepComputer = this.stepSelection();
+            console.log('Computer step:' + stepComputer);
+
             /*
-            1) Условие, если шаг 2, то будет нанесен уровень случайного урона, соответствующего диапазону из шага 2
-            2) При этом есть внутреннее условие, если здоровье компьютера равно или меньше 35, то он получает шанс на
-            исцеление, в качестве замены шага 2 на шаг 3, дающего исцеление.
+            Condition, if step 1, then the level of random damage corresponding to the range from step 1 will
+            be dealt.
+            */
+            if (stepComputer === 1) {
+                const hitOnComputer = this.stepOne();
+                console.log('Will be dealt damage:' + hitOnComputer);
+                healthComputer = healthComputer - hitOnComputer;
+                console.log('Computer health:' + healthComputer);
+            }
+
+            /*
+            1) Condition, if step 2, then the level of random damage corresponding to the range from step 2 will
+            be dealt.
+            2) In this case, there is an internal condition, if the computer's health is equal to or less than 35,
+            then it gets a chance healing, as a substitute for step 2 to step 3, giving healing.
             */
             if (stepComputer === 2) {
                 if (healthComputer <= 35) {
-                    let hitOnComputer = this.stepTree();
-                    console.log('Компьютер получил шанс на исцеление:' + hitOnComputer);
+                    const hitOnComputer = this.stepTree();
+                    console.log('The computer got a chance for healing:' + hitOnComputer);
                     healthComputer = healthComputer + hitOnComputer;
-                    console.log('Здоровье компьютера:' + healthComputer);
+                    console.log('Computer health:' + healthComputer);
                 }
                 else {
-                    let hitOnComputer = this.stepTwo();
-                    console.log('Будет нанесен урон:' + hitOnComputer);
+                    const hitOnComputer = this.stepTwo();
+                    console.log('Will be dealt damage:' + hitOnComputer);
                     healthComputer = healthComputer - hitOnComputer;
-                    console.log('Здоровье компьютера:' + healthComputer);
+                    console.log('Computer health:' + healthComputer);
                 }
             }
-            //Условие, если шаг 3, то будет нанесен уровень случайного исцеления, соответствующего диапазону из шага 3
+
+            /*
+            Condition, if step 3, then the level of random healing corresponding to the range from step 3 will
+            be applied.
+            */
             if (stepComputer === 3) {
-                let hitOnComputer = this.stepTree();
-                console.log('Будет исцелен:' + hitOnComputer);
+                const hitOnComputer = this.stepTree();
+                console.log('Will be healed:' + hitOnComputer);
                 healthComputer = healthComputer + hitOnComputer;
-                console.log('Здоровье компьютера:' + healthComputer);
+                console.log('Computer health:' + healthComputer);
             }
-            //Условие, если уровень здоровья Компьютера меньше или равен 0, то Компьютер проиграл и игра заканчивается.
+
+            /*
+            Condition, if the health level of the Computer is less than or equal to 0, then the Computer has
+            lost and the game ends.
+            */
             if (healthComputer <= 0) {
-                console.log('Компьютер проиграл');
+                console.log('Computer lost');
                 break;
             }
 
-            //Игрок делает шаг и присваивается в переменную
-            let stepPlayer = this.stepSelection();
-            console.log('Шаг игрока:' + stepPlayer);
-            //Условие, если шаг 1, то будет нанесен уровень случайного урона, соответствующего диапазону из шага 1
+            //The Player takes a step and is assigned to a variable.
+            const stepPlayer = this.stepSelection();
+            console.log('Player step:' + stepPlayer);
+
+            /*
+            Condition, if step 1, then the level of random damage corresponding to the range from step 1 will
+            be dealt.
+            */
             if (stepPlayer === 1) {
-                let hitOnPlayer = this.stepOne();
-                console.log('Будет нанесен урон:' + hitOnPlayer);
+                const hitOnPlayer = this.stepOne();
+                console.log('Will be dealt damage:' + hitOnPlayer);
                 healthPlayer = healthPlayer - hitOnPlayer;
-                console.log('Здоровье игрока:' + healthPlayer);
+                console.log('Player health:' + healthPlayer);
             }
-            //Условие, если шаг 2, то будет нанесен уровень случайного урона, соответствующего диапазону из шага 2
+
+            /*
+            Condition, if step 2, then the level of random damage corresponding to the range from step 2 will
+            be dealt.
+            */
             if (stepPlayer === 2) {
-                let hitOnPlayer = this.stepTwo();
-                console.log('Будет нанесен урон:' + hitOnPlayer);
+                const hitOnPlayer = this.stepTwo();
+                console.log('Will be dealt damage:' + hitOnPlayer);
                 healthPlayer = healthPlayer - hitOnPlayer;
-                console.log('Здоровье игрока:' + healthPlayer);
+                console.log('Player health:' + healthPlayer);
             }
-            //Условие, если шаг 3, то будет нанесен уровень случайного исцеления, соответствующего диапазону из шага 3
+
+            /*
+            Condition, if step 3, then the level of random healing corresponding to the range from step 3 will
+            be applied.
+            */
             if (stepPlayer === 3) {
-                let hitOnPlayer = this.stepTree();
-                console.log('Будет исцелен:' + hitOnPlayer);
+                const hitOnPlayer = this.stepTree();
+                console.log('Will be healed:' + hitOnPlayer);
                 healthPlayer = healthPlayer + hitOnPlayer;
-                console.log('Здоровье игрока:' + healthPlayer);
+                console.log('Player health:' + healthPlayer);
             }
-            //Условие, если уровень здоровья Игрока меньше или равен 0, то Игрок проиграл и игра заканчивается.
+
+            /*
+            Condition, if the health level of the Player is less than or equal to 0, then the Computer has
+            lost and the game ends.
+            */
             if (healthPlayer <= 0) {
-                console.log('Игрок проиграл');
+                console.log('Player lost');
             }
         }
     }
